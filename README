@@ -1,0 +1,3 @@
+Just a quick script that changes the ip of my router and the reboots my WAN router. Just to check how urllib2 handles SSL.
+
+Just practice with the urllib2 module.
