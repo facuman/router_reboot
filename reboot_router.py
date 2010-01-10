@@ -12,14 +12,28 @@ def main(argv):
         usage()
         sys.exit(2)
     try:
-        opts, args = getopt.getopt(argv, "hu:p:", ["help","user","passwd"])
+        opts, args = getopt.getopt(argv[1:], "hu:p:", ["help","user","passwd"])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
 
+    for opt,value in opts:
+        if opt == "-h":
+            usage()
+            sys.exit()
+        elif opt in ("-u","--user"):
+            user = value
+        elif opt in ("-p","--passwd"):
+            passwd = value
+        else:
+            print "Unknown parameter: %s/%s" % (opt,value)
+
+    theurl = "http://192.168.100.1"
+    encoded_url = theurl
+
     passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
     # this creates a password manager
-    passman.add_password(None, theurl, user, passwdd)
+    passman.add_password(None, theurl, user, passwd)
     # because we have put None at the start it will always
     # use this username/password combination for  urls
     # for which 'theurl' is a super-url
@@ -34,9 +48,6 @@ def main(argv):
     # Make sure not to include the protocol in with the URL, or
     # HTTPPasswordMgrWithDefaultRealm will be very confused.
     # You must (of course) use it when fetching the page though.
-
-    theurl = "http://192.168.100.1"
-    encoded_url = theurl
 
     try:
         pagehandle = urllib2.urlopen(encoded_url)
